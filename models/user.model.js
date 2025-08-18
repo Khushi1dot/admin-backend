@@ -45,4 +45,4 @@ userSchema.virtual('posts', {
 userSchema.set('toObject', { virtuals: true });
 userSchema.set('toJSON', { virtuals: true });
 
-module.exports = mongoose.model("User's", userSchema);  // ⚠️ Use consistent model name (not "User's")
+module.exports = mongoose.model("User", userSchema);  // ⚠️ Use consistent model name (not "User")
