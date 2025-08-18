@@ -72,7 +72,7 @@ static loginAdmin=catchAsync(async (req, res) => {
     res
       .cookie('admin_token', token, {
         httpOnly: true,
-        secure: true, // true in production
+        secure: false, // true in production
         sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 1 day
       })
