@@ -7,9 +7,9 @@ const upload = require("../../utils/multer");
 const auth = require("../../middlewares/authentication");
 
 
-if (process.env.NODE_ENV !== "production") {
+// if (process.env.NODE_ENV !== "production") {
   router.post("/register-admin", AdminController.registerAdmin);
-}
+// }
 router.post("/register-user", upload.single("avatar"), AdminController.registerUser);
 router.post("/login-admin", AdminController.loginAdmin);
 router.get("/admin-profile", auth(["admin"]), AdminController.getProfile);
