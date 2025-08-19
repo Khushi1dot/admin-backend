@@ -45,10 +45,14 @@ app.use(cors(corsOptions));
 
 
 // Connect DB
-mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log("MongoDB Connected Successfully..."))
-  .catch(err => console.log(err));
+  .then(() => {
+    console.log('Connected to Atlas!');
+    process.exit();
+  })
+  .catch(err => {
+    console.error('Error connecting to Atlas:', err);
+  });
 
 // Routes
 app.use("/v1", routes);
