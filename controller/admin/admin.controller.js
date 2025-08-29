@@ -73,7 +73,7 @@ static loginAdmin=catchAsync(async (req, res) => {
       .cookie('admin_token', token, {
         httpOnly: true,
         secure: true, // true in production
-        sameSite: 'none',
+        sameSite: 'none', // Adjust based on your setup
         maxAge: 24 * 60 * 60 * 1000 // 1 day
       })
       .status(200)
@@ -94,7 +94,7 @@ static loginAdmin=catchAsync(async (req, res) => {
 static registerUser=catchAsync( async (req, res) => {
   const { name, email, status, password, avatar,phoneNumber,organization, address,state,zipCode,country,language,timeZone,currency,isDeleted,deletedAt} = req.body;
  
-  if (!name || !email || !password) {
+  if (!name || !email || !password || !country) {
     return res.status(400).json({ message: "All fields are required" });
   }
  
@@ -225,18 +225,23 @@ static getUserById=catchAsync(async (req, res) => {
 });
 
 // Update user
-static updateById=catchAsync(async (req, res) => {
-  
+static updateById = catchAsync(async (req, res) => {
   const file = req.file;
 
   try {
-   const updateData = {
-      ...req.body,
-    };
-    
+    const updateData = { ...req.body };
+
+    // Parse language string if needed
+    if (updateData.language && typeof updateData.language === 'string') {
+      try {
+        updateData.language = JSON.parse(updateData.language);
+      } catch (err) {
+        console.warn('Language parse error:', err);
+      }
+    }
+
     if (file) {
-    updateData.avatar = `/uploads/profilepic/${file.filename}`;
-      
+      updateData.avatar = `/uploads/profilepic/${file.filename}`;
     }
 
     const updatedUser = await Model.findByIdAndUpdate(
@@ -245,18 +250,20 @@ static updateById=catchAsync(async (req, res) => {
       { new: true }
     );
 
-    if (!updatedUser)
-      return res.status(404).json({ success:false, message: "User not found" });
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
 
     res.status(200).json({
-      success:true,
-      message: "User updated successfully",
+      success: true,
+      message: 'User updated successfully',
       updatedUser,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 static exportUser = catchAsync(async (req, res) => {
   try {
@@ -359,7 +366,7 @@ static exportSingleUser = catchAsync(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      language: user.language || 'N/A',
+     language: Array.isArray(user.language) ? user.language.join(', ') : (user.language || 'N/A'),
       phoneNumber: user.phoneNumber || 'N/A',
       address: user.address || 'N/A',
       state: user.state || 'N/A',

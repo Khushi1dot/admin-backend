@@ -1,6 +1,7 @@
 const express = require('express');
 const postRoute = require('../../controller/post');
 const adminRoutes = require('../../controller/admin');
+const dashboardRoute = require('../../controller/dashboard');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -13,6 +14,10 @@ const defaultRoutes = [
    {
     path: '/post',
     route: postRoute,
+  },
+    {
+    path: '/dashboard',
+    route: dashboardRoute,
   },
    
 ];

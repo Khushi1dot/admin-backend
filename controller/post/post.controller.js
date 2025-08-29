@@ -9,6 +9,9 @@ class AdminPostController {
   // Create Post (Admin can assign to any user)
   static createPost = catchAsync(async (req, res) => {
     let { title, desc, categories, userId, name } = req.body;
+    if (typeof categories === 'string') {
+  categories = categories.split(',').map(c => c.trim());
+}
     const imagePaths = req.files.map((file) => file.path);
 
     if (!userId && name) {

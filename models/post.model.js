@@ -73,6 +73,7 @@ const postSchema = new mongoose.Schema(
     },
     comments: [commentSchema],
   },
+  
   {
     timestamps: true, // Adds createdAt and updatedAt
   }
