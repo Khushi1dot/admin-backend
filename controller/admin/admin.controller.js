@@ -90,6 +90,28 @@ static loginAdmin=catchAsync(async (req, res) => {
   }
 });
 
+// controller/AuthController.js
+
+static logout = async (req, res) => {
+  try {
+    res.clearCookie('admin_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      path: '/', // must match login cookie
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Logged out successfully',
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+
 //register user
 static registerUser=catchAsync( async (req, res) => {
   const { name, email, status, password, avatar,phoneNumber,organization, address,state,zipCode,country,language,timeZone,currency,isDeleted,deletedAt} = req.body;
