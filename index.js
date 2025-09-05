@@ -8,24 +8,12 @@ const cookieParser = require('cookie-parser');
 const routes = require("./router/v1/index");
 const app = express();
 app.use(cookieParser());
-// Middleware
 app.use(express.json());
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     const allowedOrigins = ["http://localhost:3000"];
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   }
-// }));
-
 app.use('/uploads', express.static('uploads'));
 
 const allowedOrigins = [
-  "http://localhost:3000",                    // for local dev
-   process.env.FRONTEND_URL      // production domain
+  "http://localhost:3000",                  
+   process.env.FRONTEND_URL    
 ];
 
 const corsOptions = {
